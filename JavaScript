@@ -1,0 +1,32 @@
+// script.js
+function addActivity() {
+    const name = document.getElementById('name').value;
+    const type = document.getElementById('type').value;
+    const website = document.getElementById('website').value;
+    const format = document.getElementById('format').value;
+    const duration = document.getElementById('duration').value;
+    const skill = document.getElementById('skill').value;
+    const stemField = document.getElementById('stemField').value;
+    const domain = document.getElementById('domain').value;
+    const grade = document.getElementById('grade').value;
+
+    if (name && type && format && duration && skill && stemField && domain && grade) {
+        const table = document.getElementById('activityTable').getElementsByTagName('tbody')[0];
+        const newRow = table.insertRow();
+        
+        newRow.insertCell().textContent = name;
+        newRow.insertCell().textContent = type;
+        newRow.insertCell().innerHTML = website ? `<a href="${website}" target="_blank">${website}</a>` : '';
+        newRow.insertCell().textContent = format;
+        newRow.insertCell().textContent = duration;
+        newRow.insertCell().textContent = skill;
+        newRow.insertCell().textContent = stemField;
+        newRow.insertCell().textContent = domain;
+        newRow.insertCell().textContent = grade;
+        
+        // Clear form fields
+        document.getElementById('activityForm').reset();
+    } else {
+        alert('Please fill out all required fields.');
+    }
+}
