@@ -1,4 +1,31 @@
 // script.js
+
+// Load activities from localStorage when the page is loaded
+document.addEventListener('DOMContentLoaded', loadActivities);
+
+function loadActivities() {
+    const activities = JSON.parse(localStorage.getItem('activities')) || [];
+    const table = document.getElementById('activityTable').getElementsByTagName('tbody')[0];
+
+    activities.forEach(activity => {
+        const newRow = table.insertRow();
+        newRow.insertCell().textContent = activity.name;
+        newRow.insertCell().textContent = activity.type;
+        newRow.insertCell().innerHTML = activity.website ? `<a href="${activity.website}" target="_blank">${activity.website}</a>` : '';
+        newRow.insertCell().textContent = activity.format;
+        newRow.insertCell().textContent = activity.duration;
+        newRow.insertCell().textContent = activity.skill;
+        newRow.insertCell().textContent = activity.stemField;
+        newRow.insertCell().textContent = activity.domain;
+        newRow.insertCell().textContent = activity.grade;
+    });
+}
+
+function isValidURL(string) {
+    const res = string.match(/(http|https):\/\/[^\s/$.?#].[^\s]*/);
+    return (res !== null);
+}
+
 function addActivity() {
     const name = document.getElementById('name').value;
     const type = document.getElementById('type').value;
@@ -11,9 +38,17 @@ function addActivity() {
     const grade = document.getElementById('grade').value;
 
     if (name && type && format && duration && skill && stemField && domain && grade) {
+        if (website && !isValidURL(website)) {
+            alert('Please enter a valid URL starting with http:// or https://');
+            return;
+        }
+
+        const activities = JSON.parse(localStorage.getItem('activities')) || [];
+        activities.push({ name, type, website, format, duration, skill, stemField, domain, grade });
+        localStorage.setItem('activities', JSON.stringify(activities));
+
         const table = document.getElementById('activityTable').getElementsByTagName('tbody')[0];
         const newRow = table.insertRow();
-        
         newRow.insertCell().textContent = name;
         newRow.insertCell().textContent = type;
         newRow.insertCell().innerHTML = website ? `<a href="${website}" target="_blank">${website}</a>` : '';
@@ -23,8 +58,8 @@ function addActivity() {
         newRow.insertCell().textContent = stemField;
         newRow.insertCell().textContent = domain;
         newRow.insertCell().textContent = grade;
-        
-        // Clear form fields
+
+        // Clear form fields (optional)
         document.getElementById('activityForm').reset();
     } else {
         alert('Please fill out all required fields.');
