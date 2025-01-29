@@ -1,0 +1,538 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SIREL - STEM Activities Database</title>
+    <!-- Link Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        /* Custom Font Integration */
+        @import url('https://fonts.googleapis.com/css2?family=Dancing+Script&display=swap');
+        .font-dancingScript
+        {
+            font-family: 'Cinzel Decorative';
+        }
+        .font-playfair
+        {
+            font-family: 'Playfair Display', serif;
+        }
+        /* Modal Styling */
+        .modal
+        {
+            display: none;
+        }
+        .modal.show
+        {
+            display: flex;
+        }
+        .modal-content
+        {
+            max-width: 600px;
+            width: 100%;
+            margin: auto;
+            background-color: white;
+            padding: 20px;
+            border-radius: 8px;
+        }
+        .modal-overlay
+        {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.5);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+        /* Activity Box Color */
+        .activity-box
+        {
+            width: calc(100% - 2rem);
+            margin: 0 1rem;
+            overflow: hidden;
+        }
+        .activity-container
+        {
+            padding: 0;
+        }
+        .activity-box .flex-wrap
+        {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.5rem;
+        }
+        .filters-container
+        {
+            width: 300px;
+            padding: 0 1rem;
+        }
+        /* Tag Coloring */
+        .red-tag
+        {
+            background-color: #f87171;
+            padding: 0.3rem;
+            border-radius: 0.25rem;
+            color: white;
+            max-width: calc(100% - 1rem);
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis; #fb923c
+        }
+        .orange-tag
+        {
+            background-color: #fb923c;
+            padding: 0.3rem;
+            border-radius: 0.25rem;
+            color: white;
+            max-width: calc(100% - 1rem);
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+        .yellow-tag
+        {
+            background-color: #fbbf24;
+            padding: 0.3rem;
+            border-radius: 0.25rem;
+            color: white;
+            max-width: calc(100% - 1rem);
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+        .green-tag
+        {
+            background-color: #34d399;
+            padding: 0.3rem;
+            border-radius: 0.25rem;
+            color: white;
+            max-width: calc(100% - 1rem);
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+        .blue-tag
+        {
+            background-color: #3b82f6;
+            padding: 0.3rem;
+            border-radius: 0.25rem;
+            color: white;
+            max-width: calc(100% - 1rem);
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+        .purple-tag
+        {
+            background-color: #9333ea;
+            padding: 0.3rem;
+            border-radius: 0.25rem;
+            color: white;
+            max-width: calc(100% - 1rem);
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+        .pink-tag
+        {
+            background-color: #ec4899;
+            padding: 0.3rem;
+            border-radius: 0.25rem;
+            color: white;
+            max-width: calc(100% - 1rem);
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+        
+        /* Dropdown Color Adjustments */
+        #activity-type { background-color: #f87171; }
+        #activity-format { background-color: #fb923c; }
+        #tuition { background-color: #fbbf24; }
+        #duration { background-color: #34d399; }
+        #skill-level { background-color: #3b82f6; }
+        #subject-area { background-color: #9333ea; }
+        #grade-level { background-color: #ec4899; }
+    </style>
+</head>
+
+<body class="font-sans bg-gray-100">
+
+    <!-- Navigation Bar -->
+    <nav class="flex items-center justify-between px-8 py-4 bg-transparent">
+        <!-- Title -->
+        <div class="text-3xl font-bold font-dancingScript text-black">SIREL</div> <!-- Increased font size -->
+        <!-- Centered Buttons -->
+        <div class="flex space-x-6 mx-auto">
+            <a href="home.html" class="text-black hover:underline">Home</a>
+            <a href="#" class="text-black hover:underline">About</a>
+            <a href="#" class="text-black hover:underline">Database</a>
+            <a href="#" class="text-black hover:underline">Contact</a>
+        </div>
+        <!-- Report Issues Button -->
+        <div>
+            <a href="YOUR_GOOGLE_FORM_LINK" class="p-2 bg-blue-600 text-white rounded-lg">Report Issues</a>
+        </div>
+    </nav>
+
+    <br>
+
+    <!-- Search Bar -->
+    <div class="flex justify-center mb-6">
+        <input type="text" id="search" placeholder="Search Activities..." class="w-3/5 p-3 text-lg rounded-lg border border-gray-300" onkeyup="searchActivities()">
+    </div>
+    
+    <!-- Main Content Section (Filters and Activities) -->
+    <div class="flex">
+        <!-- Filters Section -->
+        <div class="w-72 p-6 bg-gray-200 border-r-2 border-gray-300 ml-4 flex-shrink-0">
+            <!-- Type of Activity Dropdown -->
+            <div class="mb-4">
+                <label for="activity-type" class="block text-lg font-semibold">Type of Activity</label>
+                <select id="activity-type" class="w-full p-2 border rounded-md" onchange="filterActivities()">
+                    <option value="select-below">Select Below</option>
+                    <option>Club</option>
+                    <option>College Course</option>
+                    <option>Competitions</option>
+                    <option>Program</option>
+                    <option>Research</option>
+                    <option>Scholarship</option>
+                    <option>Summer Program</option>
+                </select>
+            </div>
+
+            <!-- Activity Format Dropdown -->
+            <div class="mb-4">
+                <label for="activity-format" class="block text-lg font-semibold">Format</label>
+                <select id="activity-format" class="w-full p-2 border rounded-md" onchange="filterActivities()">
+                    <option value="select-below">Select Below</option>
+                    <option>In Person</option>
+                    <option>Remote</option>
+                    <option>Hybrid</option>
+                </select>
+            </div>
+
+            <!-- Tuition Dropdown -->
+            <div class="mb-4">
+                <label for="tuition" class="block text-lg font-semibold">Tuition</label>
+                <select id="tuition" class="w-full p-2 border rounded-md" onchange="filterActivities()">
+                    <option value="select-below">Select Below</option>
+                    <option>Free</option>
+                    <option>Paid</option>
+                </select>
+            </div>
+
+            <!-- Duration Dropdown -->
+            <div class="mb-4">
+                <label for="duration" class="block text-lg font-semibold">Duration</label>
+                <select id="duration" class="w-full p-2 border rounded-md" onchange="filterActivities()">
+                    <option value="select-below">Select Below</option>
+                    <option>Less than a Week</option>
+                    <option>1 Week</option>
+                    <option>2 Weeks</option>
+                    <option>1 Month</option>
+                    <option>2 Months</option>
+                    <option>4 Months</option>
+                    <option>6 Months</option>
+                    <option>1 Year</option>
+                    <option>Indefinite / Long Term</option>
+                </select>
+            </div>
+
+            <!-- Skill Level Dropdown -->
+            <div class="mb-4">
+                <label for="skill-level" class="block text-lg font-semibold">Skill Level</label>
+                <select id="skill-level" class="w-full p-2 border rounded-md" onchange="filterActivities()">
+                    <option value="select-below">Select Below</option>
+                    <option>Beginner</option>
+                    <option>Intermediate</option>
+                    <option>Advanced</option>
+                </select>
+            </div>
+
+            <!-- Subject Area Dropdown -->
+            <div class="mb-4">
+                <label for="subject-area" class="block text-lg font-semibold">Subject Area</label>
+                <select id="subject-area" class="w-full p-2 border rounded-md" onchange="filterActivities()">
+                    <option value="select-below">Select Below</option>
+                    <option>Aerospace</option>
+                    <option>Astronomy</option>
+                    <option>Artificial Intelligence</option>
+                    <option>Biology</option>
+                    <option>Biomedicine</option>
+                    <option>Biotechnology</option>
+                    <option>Chemistry</option>
+                    <option>Computer Science</option>
+                    <option>Cybersecurity</option>
+                    <option>Engineering</option>
+                    <option>Environmental Science</option>
+                    <option>General</option>
+                    <option>Geography</option>
+                    <option>Hacking</option>
+                    <option>Marine Biology</option>
+                    <option>Mathematics</option>
+                    <option>Medicine</option>
+                    <option>Neuroscience</option>
+                    <option>Physics</option>
+                    <option>Psychology</option>
+                    <option>Science Research</option>
+                    <option>Robotics</option>
+                    <option>Science</option>
+                    <option>STEM Entrepreneurship</option>
+                    <option>Technology</option>
+                    <option>Writing</option>
+                </select>
+            </div>
+
+            <!-- Grade Level Dropdown -->
+            <div class="mb-4">
+                <label for="grade-level" class="block text-lg font-semibold">Grade Level</label>
+                <select id="grade-level" class="w-full p-2 border rounded-md" onchange="filterActivities()">
+                    <option value="select-below">Select Below</option>
+                    <option>K - 8</option>
+                    <option>9th</option>
+                    <option>10th</option>
+                    <option>11th</option>
+                    <option>12th</option>
+                    <option>College</option>
+                    <option>Graduate School</option>
+                </select>
+            </div>
+
+            <!-- Clear Filters Button -->
+            <button id="clear-filters" class="w-full p-3 bg-gray-500 text-white rounded-lg mt-4" onclick="clearFilters()">Clear Filters</button>
+        </div>
+
+        <!-- Activity Box Section -->
+        <div class="flex-1 p-6">
+            <div class="flex flex-col gap-6" id="activity-container"> <!-- Changed to flex column -->
+            <!--Start Copy from here-->
+            <!-- Example Activity Box 1 (update this number) --> 
+            <div class="activity-box p-4 bg-blue-900 text-white rounded-lg cursor-pointer" data-tags="Research, Remote, Free, 2 Months, Advanced, Science Research, 9th, 10th, 11th, 12th" onclick="openModal(1)"> <!--and this number (also update the tags in data-tags)-->
+                <div class="flex"> <!-- Flex container for text and image -->
+                    <div class="flex-1"> <!-- Text container -->
+                        <h3 class="text-xl font-semibold">MIT THINK Scholars Program</h3> <!--update this-->
+                        <div class="flex flex-wrap gap-2 mt-2">
+                            <span class="red-tag">Research</span> <!--don't touch tags (orange), just update information (white)-->
+                            <span class="orange-tag">Remote</span> <!--don't touch tags (orange), just update information (white)-->
+                            <span class="yellow-tag">Free</span> <!--don't touch tags (orange), just update information (white)-->
+                            <span class="green-tag">2 Months</span> <!--don't touch tags (orange), just update information (white)-->
+                            <span class="blue-tag">Advanced</span> <!--don't touch tags (orange), just update information (white)-->
+                            <span class="purple-tag">Science Research</span> <!--don't touch tags (orange), just update information (white)-->
+                            <span class="pink-tag">9th</span> <!--don't touch tags (orange), just update information (white)-->
+                            <span class="pink-tag">10th</span> <!--don't touch tags (orange), just update information (white)-->
+                            <span class="pink-tag">11th</span> <!--don't touch tags (orange), just update information (white)-->
+                            <span class="pink-tag">12th</span> <!--don't touch tags (orange), just update information (white)-->
+                        </div>
+                        <p class="text-lg mt-2">The MIT THINK Scholars Program invites high school students passionate about STEM to propose innovative projects addressing real-world problems, focusing on creativity, originality, and impact. Selected students receive mentorship from MIT students, up to $1,000 in project funding, and a fully funded trip to MIT to present their work. THINK provides valuable resources, including guidance on research methods and access to MIT’s extensive network, empowering young researchers to make meaningful contributions in STEM.</p> <!-- Description below tags (update this)-->
+                    </div>
+                    <div class="w-1/4 flex items-center"> <!-- Image container with flex to center the image -->
+                        <img src="MIT_THINK_Scholars_Program.png" alt="Image" class="mx-auto"> <!-- Center the image horizontally (update image url)-->
+                    </div>
+                </div>
+            </div>
+            <!--End Copy here-->
+
+            <!-- Example Activity Box 2 -->
+            <div class="activity-box p-4 bg-blue-900 text-white rounded-lg cursor-pointer" data-tags="Program, Paid, 2 Months" onclick="openModal(2)">
+                <div class="flex"> <!-- Flex container for text and image -->
+                    <div class="flex-1"> <!-- Text container -->
+                        <h3 class="text-xl font-semibold">Robotics Program</h3>
+                        <div class="flex flex-wrap gap-2 mt-2">
+                            <span class="red-tag">Program</span>
+                            <span class="yellow-tag">Paid</span>
+                            <span class="green-tag">2 Months</span>
+                        </div>
+                        <p class="text-lg mt-2">A hands-on program to build robots.</p> <!-- Description below tags -->
+                    </div>
+                    <div class="w-1/4 flex items-center"> <!-- Image container with flex to center the image -->
+                        <img src="https://via.placeholder.com/150" alt="Image" class="mx-auto"> <!-- Center the image horizontally -->
+                    </div>
+                </div>
+            </div>
+
+            <!-- Example Activity Box 3 -->
+            <div class="activity-box p-4 bg-blue-900 text-white rounded-lg cursor-pointer" data-tags="Summer Program, Free, Indefinite / Long Term" onclick="openModal(3)">
+                <div class="flex"> <!-- Flex container for text and image -->
+                    <div class="flex-1"> <!-- Text container -->
+                        <h3 class="text-xl font-semibold">Medical Summer Camp</h3>
+                        <div class="flex flex-wrap gap-2 mt-2">
+                            <span class="red-tag">Summer Program</span>
+                            <span class="yellow-tag">Free</span>
+                            <span class="green-tag">Indefinite / Long Term</span>
+                        </div>
+                        <p class="text-lg mt-2">A hands-on program to understand medicine.</p> <!-- Description below tags -->
+                    </div>
+                    <div class="w-1/4 flex items-center"> <!-- Image container with flex to center the image -->
+                        <img src="https://via.placeholder.com/150" alt="Image" class="mx-auto"> <!-- Center the image horizontally -->
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal for Activity 1 -->
+    <div class="modal" id="modal-1">
+        <div class="modal-overlay" onclick="closeModal(1)">
+            <div class="modal-content p-4 rounded-lg" style="background-color: #d4e1ff;"> <!-- Added padding and background color -->
+                <!-- Close button positioned at the top-right corner -->
+                <div class="relative">
+                    <button class="absolute top-0 right-0 text-red-500 text-xl font-bold mb-4" onclick="closeModal(1)">X</button>
+                </div>
+                <h3 class="text-2xl font-semibold">MIT THINK Scholars Program</h3> <!-- Title -->
+                <br>
+                <div class="flex flex-wrap gap-2 mt-2"> <!-- Tags -->
+                    <span class="red-tag">Research</span>
+                    <span class="orange-tag">Remote</span>
+                    <span class="yellow-tag">Free</span>
+                    <span class="green-tag">2 Months</span>
+                    <span class="blue-tag">Advanced</span>
+                    <span class="purple-tag">Science Research</span>
+                    <span class="pink-tag">9th</span>
+                    <span class="pink-tag">10th</span>
+                    <span class="pink-tag">11th</span>
+                    <span class="pink-tag">12th</span>
+                </div>
+                <br>
+                <p class="text-lg mt-2">The MIT THINK Scholars Program invites high school students passionate about STEM to propose innovative projects addressing real-world problems, focusing on creativity, originality, and impact. Selected students receive mentorship from MIT students, up to $1,000 in project funding, and a fully funded trip to MIT to present their work. THINK provides valuable resources, including guidance on research methods and access to MIT’s extensive network, empowering young researchers to make meaningful contributions in STEM.</p> <!-- Description -->
+                <br>
+                <div class="text-center">
+                    <a href="https://think.mit.edu/" target="_blank" class="mt-4 p-3 bg-blue-600 text-white rounded-lg">Go to Website!</a> <!-- Button -->
+                </div>
+            </div>
+            <br>
+        </div>
+    </div>
+
+    <!-- Modal for Activity 2 -->
+    <div class="modal" id="modal-2">
+        <div class="modal-overlay" onclick="closeModal(2)">
+            <div class="modal-content">
+                <!-- Close button positioned at the top-right corner -->
+                <div class="relative">
+                    <button class="absolute top-0 right-0 text-red-500 text-xl font-bold mb-4" onclick="closeModal(2)">X</button>
+                </div>
+                <h3 class="text-2xl font-semibold">Robotics Program</h3>
+                <div class="flex gap-2 mt-2">
+                    <span class="red-tag">Program</span>
+                    <span class="yellow-tag">Paid</span>
+                    <span class="green-tag">2 Months</span>
+                </div>
+                <p class="text-lg">A hands-on program to build robots.</p>
+                <img src="https://via.placeholder.com/300" alt="Image" class="mt-4 mb-6">
+                <a href="https://www.example.com" target="_blank" class="p-3 bg-blue-600 text-white rounded-lg">Go to Website</a>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal for Activity 3 -->
+    <div class="modal" id="modal-3">
+        <div class="modal-overlay" onclick="closeModal(3)">
+            <div class="modal-content">
+                <!-- Close button positioned at the top-right corner -->
+                <div class="relative">
+                    <button class="absolute top-0 right-0 text-red-500 text-xl font-bold mb-4" onclick="closeModal(2)">X</button>
+                </div>
+                <h3 class="text-2xl font-semibold">Medical Summer Camp</h3>
+                <div class="flex gap-2 mt-2">
+                    <span class="red-tag">Summer Program</span>
+                    <span class="yellow-tag">Free</span>
+                    <span class="green-tag">Indefinite / Long Term</span>
+                </div>
+                <p class="text-lg">A hands-on program to understand medicine</p>
+                <img src="https://via.placeholder.com/300" alt="Image" class="mt-4 mb-6">
+                <a href="https://www.example.com" target="_blank" class="p-3 bg-blue-600 text-white rounded-lg">Go to Website</a>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Modal functionality
+        function openModal(id) {
+            document.getElementById('modal-' + id).classList.add('show');
+        }
+
+        function closeModal(id) {
+            document.getElementById('modal-' + id).classList.remove('show');
+        }
+
+        // Activity Filtering
+        function filterActivities()
+        {
+            var type = document.getElementById("activity-type").value;
+            var format = document.getElementById("activity-format").value;
+            var tuition = document.getElementById("tuition").value;
+            var duration = document.getElementById("duration").value;
+            var level = document.getElementById("skill-level").value;
+            var area = document.getElementById("subject-area").value;
+            var grade = document.getElementById("grade-level").value;
+
+            // Loop through each activity box and filter based on tags
+            var activities = document.querySelectorAll('.activity-box');
+            activities.forEach(function(activity)
+            {
+                var tags = activity.getAttribute('data-tags').split(', ');
+                var show = true;
+
+                // Check each filter against the tags
+                if (type !== "select-below" && !tags.includes(type))
+                {
+                    show = false;
+                }
+                if (format !== "select-below" && !tags.includes(format))
+                {
+                    show = false;
+                }
+                if (tuition !== "select-below" && !tags.includes(tuition))
+                {
+                    show = false;
+                }
+                if (duration !== "select-below" && !tags.includes(duration))
+                {
+                    show = false;
+                }
+                if (level !== "select-below" && !tags.includes(level))
+                {
+                    show = false;
+                }
+                if (area !== "select-below" && !tags.includes(area))
+                {
+                    show = false;
+                }
+                if (grade !== "select-below" && !tags.includes(grade))
+                {
+                    show = false;
+                }
+
+                // Display or hide the activity based on the show flag
+                activity.style.display = show ? "block" : "none";
+            });
+        }
+
+        // Clear Filters
+        function clearFilters()
+        {
+            document.querySelectorAll('select').forEach(function(select) {
+                select.value = 'select-below';
+            });
+            filterActivities();
+        }
+
+        // Search Functionality
+        function searchActivities()
+        {
+            var searchTerm = document.getElementById("search").value.toLowerCase();
+            var activities = document.querySelectorAll('.activity-box');
+            
+            activities.forEach(function(activity)
+            {
+                var title = activity.querySelector("h3").innerText.toLowerCase();
+                activity.style.display = title.includes(searchTerm) ? "block" : "none";
+            });
+        }
+    </script>
+</body>
+</html>
