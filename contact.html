@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SIREL - STEM Extracurriculars Simplified</title>
+    <!-- Link Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Link Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Smooch+Sans&family=Playfair+Display&display=swap" rel="stylesheet">
+    <style>
+        /* Custom Font Integration */
+        .font-smooch {
+            font-family: 'Smooch Sans', cursive;
+        }
+        .font-playfair {
+            font-family: 'Playfair Display', serif;
+            color: #3e0154; /* Set text color */
+        }
+        /* Box styling */
+        .text-box {
+            border: 2px solid black; /* Black border */
+            padding: 10px; /* Padding inside the box */
+            display: inline-block; /* Make the box fit the text */
+            margin-top: 10px; /* Space above the box */
+            text-align: center; /* Center text inside the box */
+        }
+        .image-container {
+            width: 200px; /* Set a width for the image container */
+            height: 200px; /* Set a height for the image container */
+            border-radius: 50%; /* Make the container circular */
+            overflow: hidden; /* Hide overflow to maintain circular shape */
+            display: flex; /* Center the image */
+            align-items: center; /* Center the image vertically */
+            justify-content: center; /* Center the image horizontally */
+            margin-bottom: 10px; /* Space below the image */
+        }
+        .image-container img {
+            width: 100%; /* Make the image fill the container */
+            height: auto; /* Maintain aspect ratio */
+        }
+    </style>
+</head>
+<body class="font-sans" style="background-color: #ebf2ff;"> <!-- Set background color here -->
+
+    <!-- Navigation Bar -->
+    <nav class="flex items-center justify-between px-8 py-4 bg-transparent">
+        <!-- Title -->
+        <div class="text-3xl font-bold font-dancingScript text-black">SIREL</div>
+        <!-- Centered Buttons -->
+        <div class="flex space-x-6 mx-auto">
+            <a href="home.html" class="text-black hover:underline">Home</a>
+            <a href="about.html" class="text-black hover:underline">About</a>
+            <a href="database.html" class="text-black hover:underline">Database</a>
+            <a href="contact.html" class="text-black hover:underline">Contact</a>
+        </div>
+        <!-- Report Issues Button -->
+        <div>
+            <a href="https://docs.google.com/forms/d/e/1FAIpQLScE7O1DzeGR8ApxbEv4_lBAZawn2CwJtRDAUxefPiHY8PLp9w/viewform?usp=header" class="p-2 bg-blue-600 text-white rounded-lg">Report Issues</a>
+        </div>
+    </nav>
+
+    <div class="flex items-center justify-center min-h-screen">
+        <div class="flex space-x-60"> <!-- Increased space between pairs -->
+            <!-- First Pair -->
+            <div class="flex flex-col items-center">
+                <div class="image-container">
+                    <img src="Contact_Picture(R).JPEG" alt="Description of Image 1">
+                </div>
+                <div class="text-box">
+                    <h2 class="font-playfair text-xl">Ridhi Gutta - CEO</h2>
+                </div>
+                <div class="text-box">
+                    <p class="font-smooch">Ridhi Gutta is a sophomore attending the Academy of Science and</p>
+                    <p class="font-smooch">Independence High School. She enjoys coding, playing the piano,</p>
+                    <p class="font-smooch">and dancing. As the CEO of Curabitrix, she hopes that this database will.</p>
+                    <p class="font-smooch">become a useful resource for high schoolers that are feeling lost.</p>
+                    <p class="font-smooch">Currently, she is interested in making her mark in either the medical or</p>
+                    <p class="font-smooch">engineering worlds.</p>
+                </div>
+            </div>
+
+            <!-- Second Pair -->
+            <div class="flex flex-col items-center">
+                <div class="image-container">
+                    <img src="Contact_Picture(L).jpg" alt="Description of Image 2">
+                </div>
+                <div class="text-box">
+                    <h2 class="font-playfair text-xl">Sreelasya Polavarapu - COO</h2>
+                </div>
+                <div class="text-box">
+                    <p class="font-smooch">Sreelasya Polavarapu is a sophomore attending the Academy of Engineering and</p>
+                    <p class="font-smooch">Technology and Independence High School. She enjoys reading, writing, singing,</p>
+                    <p class="font-smooch">dancing, and coding. As the COO of Curabitrix, she hopes that this database will</p>
+                    <p class="font-smooch">help millions of students around the world fulfill their extracurriculars, and</p>
+                    <p class="font-smooch">get into their dream school to achieve whatever they wish to be. She herself aspires</p>
+                    <p class="font-smooch">to delve into the medical world, specifically pediatrics.</p>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+</html>

@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SIREL - STEM Extracurriculars Simplified</title>
+    <!-- Link Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Link Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Smooch+Sans&family=Playfair+Display&display=swap" rel="stylesheet">
+    <style>
+        /* Custom Font Integration */
+        .font-smooch {
+            font-family: 'Smooch Sans', cursive;
+        }
+        .font-playfair {
+            font-family: 'Playfair Display', serif;
+            color: #3e0154; /* Set text color */
+        }
+        /* Box styling */
+        .text-box {
+            border: 2px solid black; /* Black border */
+            padding: 10px; /* Padding inside the box */
+            display: inline-block; /* Make the box fit the text */
+            margin-top: 10px; /* Space above the box */
+            text-align: center; /* Center text inside the box */
+        }
+        .image-container {
+            max-width: 200px; /* Set a max width for the image */
+        }
+    </style>
+</head>
+<body class="font-sans" style="background-color: #ebf2ff;"> <!-- Set background color here -->
+
+    <!-- Navigation Bar -->
+    <nav class="flex items-center justify-between px-8 py-4 bg-transparent">
+        <!-- Title -->
+        <div class="text-3xl font-bold font-dancingScript text-black">SIREL</div>
+        <!-- Centered Buttons -->
+        <div class="flex space-x-6 mx-auto">
+            <a href="home.html" class="text-black hover:underline">Home</a>
+            <a href="about.html" class="text-black hover:underline">About</a>
+            <a href="database.html" class="text-black hover:underline">Database</a>
+            <a href="contact.html" class="text-black hover:underline">Contact</a>
+        </div>
+        <!-- Report Issues Button -->
+        <div>
+            <a href="https://docs.google.com/forms/d/e/1FAIpQLScE7O1DzeGR8ApxbEv4_lBAZawn2CwJtRDAUxefPiHY8PLp9w/viewform?usp=header" class="p-2 bg-blue-600 text-white rounded-lg">Report Issues</a>
+        </div>
+    </nav>
+
+    <div class="flex items-center justify-center min-h-screen">
+        <div class="flex flex-col items-center space-y-6">
+            <!-- Image -->
+            <div class="image-container">
+                <img src="Curabitrix_Logo.jpeg" alt="Description of Image" class="w-full h-auto rounded-lg">
+            </div>
+            <br>
+            <br>
+            <!-- Text Boxes -->
+            <div class="flex flex-col space-y-4">
+                <!-- Title Box -->
+                <div class="text-box">
+                    <h2 class="font-playfair text-xl">Product of Curabitrix</h2>
+                </div>
+                <!-- Description Box -->
+                <div class="text-box">
+                    <h3 class="font-smooch text-lg">SIREL is a subsidiary of Curabitrix, a biotechnology organization dedicated to enhancing the quality of life through the integration of biology and technology.</h3>
+                    <h3 class="font-smooch text-lg">To learn more about our leadership team, please visit the "Contact" section.</h3>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+</html>
